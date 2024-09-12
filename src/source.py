@@ -12,6 +12,14 @@ from sklearn.ensemble import RandomForestClassifier
 import re
 import string
 import LogicalRegression as LR_file
+import DecisionTree as DT_file
+import RandomForest as RF_file
+import GradientBoosting as GB_file
+import ManualTest as MN_file
+
+
+#se settata a 0 non stampa report, se a 1 lo abilita
+PRINT_REPORT = 0
 
 
 #Creating a function to process the texts
@@ -27,7 +35,7 @@ def wordopt(text):
     return text
 
 
-data_path = '' #Inserire il proprio path dei CSV
+data_path = '/Users/...' #Inserire il proprio path dei CSV
 
 df_fake = pd.read_csv(data_path+'Fake.csv')
 df_true = pd.read_csv(data_path+'True.csv')
@@ -96,8 +104,13 @@ xv_test = vectorization.transform(x_test)
 
 
 #Logistic Regression
-LR_file.Start(xv_train, y_train, xv_test, y_test, 1) #modificare ultimo parametro a 0 per non produrre report
+LR = LR_file.Start(xv_train, y_train, xv_test, y_test, PRINT_REPORT) 
+DT = DT_file.Start(xv_train, y_train, xv_test, y_test, PRINT_REPORT)
+GCB = GB_file.Start(xv_train, y_train, xv_test, y_test, PRINT_REPORT)
+RFC = RF_file.Start(xv_train, y_train, xv_test, y_test, PRINT_REPORT) 
 
 
-#news = str(input())
-#manual_testing(news)
+#prendo in input una possibile fake news
+news = str(input())
+#Richiamo algoritmi ML per verifica se fake news o meno
+MN_file.manual_testing(news, LR, DT, GCB, RFC)
